@@ -43,11 +43,13 @@ export default function SettingsClient({
   users,
   closedDays,
   today,
+  canManageUsers,
 }: {
   settings: AppSettings;
   users: User[];
   closedDays: { date: string; note: string | null }[];
   today: string;
+  canManageUsers: boolean;
 }) {
   return (
     <div className="grid gap-4 lg:grid-cols-2">
@@ -57,7 +59,7 @@ export default function SettingsClient({
         <PeriodCard settings={settings} />
         <RecomputeCard />
       </div>
-      <UsersCard users={users} />
+      {canManageUsers && <UsersCard users={users} />}
       <ClosedCard closedDays={closedDays} today={today} />
     </div>
   );

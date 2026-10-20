@@ -2,8 +2,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const ADMIN_PREFIXES = ["/menus", "/analysis", "/settings"];
-
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -42,14 +40,10 @@ export async function proxy(request: NextRequest) {
     return path === "/login" ? response : redirect("/login");
   }
 
-  const isAdminPath = path === "/" || ADMIN_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`));
-  if (isAdminPath || path === "/login") {
-    const { data: profile } = await supabase.from("profiles").select("role, active").eq("id", user.id).maybeSingle();
-    if (!profile || !profile.active) return path === "/login" ? response : redirect("/login");
-    const home = profile.role === "admin" ? "/" : "/input";
-    if (path === "/login") return redirect(home);
-    if (profile.role !== "admin") return redirect("/input");
-  }
+  // 관리자·영양사 모두 같은 화면을 쓴다 (사용자 관리만 관리자 전용, 서버 액션에서 막음)
+  const { data: profile } = await supabase.from("profiles").select("active").eq("id", user.id).maybeSingle();
+  if (!profile || !profile.active) return path === "/login" ? response : redirect("/login");
+  if (path === "/login") return redirect("/");
   return response;
 }
 

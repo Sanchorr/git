@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { assertAdmin } from "@/lib/auth";
+import { assertAdmin, assertStaff } from "@/lib/auth";
 import { addDays, addMonths, monthBounds, todayKST } from "@/lib/dates";
 import { recalcCalendarFlags } from "@/lib/jobs";
 import { isoDate } from "@/lib/menus/schema";
@@ -36,7 +36,7 @@ type SettingKey = keyof typeof settingSchemas;
 /** 설정 1건 갱신 후 필요 시 재계산 */
 export async function updateSettings(key: SettingKey, value: unknown): Promise<Result> {
   try {
-    await assertAdmin();
+    await assertStaff();
     const schema = settingSchemas[key];
     if (!schema) return { ok: false, message: "알 수 없는 설정이에요" };
     const parsed = schema.safeParse(value);
@@ -63,7 +63,7 @@ export async function updateSettings(key: SettingKey, value: unknown): Promise<R
 
 export async function recomputeNow(): Promise<Result> {
   try {
-    await assertAdmin();
+    await assertStaff();
     const r = await recomputeFromToday(createAdminClient());
     revalidatePath("/", "layout");
     return { ok: true, message: `${r.predicted}일 예측을 다시 계산했어요 (학습 ${r.nDays}일)` };
@@ -76,7 +76,7 @@ const closedInput = z.object({ date: isoDate, closed: z.boolean(), note: z.strin
 
 export async function setCompanyClosed(raw: z.input<typeof closedInput>): Promise<Result> {
   try {
-    await assertAdmin();
+    await assertStaff();
     const v = closedInput.parse(raw);
     const db = createAdminClient();
     const { data: row } = await db.from("calendar_days").select("date").eq("date", v.date).maybeSingle();

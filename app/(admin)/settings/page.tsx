@@ -1,3 +1,4 @@
+import { requireStaffPage } from "@/lib/auth";
 import { todayKST } from "@/lib/dates";
 import { loadSettings } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
@@ -7,6 +8,7 @@ import SettingsClient from "./SettingsClient";
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
+  const profile = await requireStaffPage();
   const supabase = await createClient();
   const [settings, usersRes, closedRes] = await Promise.all([
     loadSettings(supabase),
@@ -21,7 +23,13 @@ export default async function SettingsPage() {
   return (
     <>
       <PageHeader title="설정" sub="계수와 기간을 바꾸면 오늘 이후 예측을 다시 계산해요." />
-      <SettingsClient settings={settings} users={usersRes.data ?? []} closedDays={closedRes.data ?? []} today={todayKST()} />
+      <SettingsClient
+        settings={settings}
+        users={usersRes.data ?? []}
+        closedDays={closedRes.data ?? []}
+        today={todayKST()}
+        canManageUsers={profile.role === "admin"}
+      />
     </>
   );
 }

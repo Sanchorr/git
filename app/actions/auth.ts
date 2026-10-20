@@ -17,7 +17,7 @@ export async function signIn(_: { message: string } | null, form: FormData): Pro
     await supabase.auth.signOut();
     return { message: "사용할 수 없는 계정이에요. 관리자에게 문의해 주세요" };
   }
-  redirect(profile.role === "admin" ? "/" : "/input");
+  redirect("/");
 }
 
 export async function signOut() {

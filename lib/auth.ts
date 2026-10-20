@@ -21,24 +21,17 @@ export async function getProfile(): Promise<SessionProfile | null> {
   return { id: data.id, name: data.name, role: data.role as Role };
 }
 
-/** 페이지용: 로그인 안 했으면 /login, 관리자가 아니면 /input */
-export async function requireAdminPage(): Promise<SessionProfile> {
-  const p = await getProfile();
-  if (!p) redirect("/login");
-  if (p.role !== "admin") redirect("/input");
-  return p;
-}
-
+/** 페이지용: 로그인 안 했으면 /login. 관리자·영양사 모두 모든 화면을 본다. */
 export async function requireStaffPage(): Promise<SessionProfile> {
   const p = await getProfile();
   if (!p) redirect("/login");
   return p;
 }
 
-/** 서버 액션·API용: 권한이 없으면 예외 */
+/** 서버 액션·API용: 권한이 없으면 예외. 관리자 전용은 사용자 관리뿐이다. */
 export async function assertAdmin(): Promise<SessionProfile> {
   const p = await getProfile();
-  if (!p || p.role !== "admin") throw new Error("관리자만 할 수 있어요");
+  if (!p || p.role !== "admin") throw new Error("계정 관리는 관리자만 할 수 있어요");
   return p;
 }
 

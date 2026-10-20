@@ -55,11 +55,9 @@ export default async function InputPage({ searchParams }: { searchParams: Promis
       <header className="mb-3 flex items-center justify-between text-sm">
         <span className="font-bold text-ink">🍚 식수 입력</span>
         <div className="flex items-center gap-1 text-muted">
-          {profile.role === "admin" && (
-            <Link href="/" className="rounded-lg px-2 py-1 hover:bg-surface-2">
-              주간 예측
-            </Link>
-          )}
+          <Link href="/" className="rounded-lg px-2 py-1 hover:bg-surface-2">
+            주간 예측
+          </Link>
           <span className="px-1">{profile.name} 님</span>
           <form action={signOut}>
             <button className="rounded-lg px-2 py-1 hover:bg-surface-2">로그아웃</button>

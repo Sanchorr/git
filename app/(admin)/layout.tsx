@@ -1,9 +1,9 @@
-import { requireAdminPage } from "@/lib/auth";
+import { requireStaffPage } from "@/lib/auth";
 import { signOut } from "@/app/actions/auth";
 import NavLinks from "./NavLinks";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const profile = await requireAdminPage();
+  const profile = await requireStaffPage();
   return (
     <div className="min-h-dvh">
       <header className="sticky top-0 z-20 border-b border-line bg-surface/90 backdrop-blur">

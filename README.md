@@ -20,7 +20,7 @@ npm run dev
 ## Supabase 준비
 
 1. 서울 리전(ap-northeast-2)에 프로젝트를 만든다.
-2. SQL Editor에서 `supabase/migrations/0001_init.sql` → `supabase/seed.sql` 순서로 실행한다.
+2. SQL Editor에서 `supabase/migrations/0001_init.sql` → `0002_staff_access.sql` → `supabase/seed.sql` 순서로 실행한다.
    (Supabase CLI를 쓰면 `supabase db push` 후 seed 실행)
 3. 대시보드 Authentication에서 관리자 사용자를 만들고, `profiles`에 직접 넣는다.
    ```sql
@@ -54,6 +54,10 @@ proxy.ts                    세션 갱신·역할별 이동 (Next 16의 middlewa
 ```
 
 ## 정의서와 다르게 정한 점
+
+- **영양사도 관리자와 같은 화면을 본다.** 주간 예측·식단 업로드·분석·설정을 모두 쓰고, 로그인하면 둘 다 `/`로 간다.
+  관리자 전용은 사용자 관리(계정 만들기·비활성화)뿐이다. 식수 입력의 '최근 7일' 제한은 영양사에게 그대로 적용된다.
+  (`0002_staff_access.sql`)
 
 - **보장인원 미달일**은 정산 총식수(일반식 + 간편식) 기준으로 센다. 일반식만으로 세면 9/29(104명)가 포함돼
   정의서 8장의 기대값(5일)과 맞지 않는다. 주간 예측 화면의 "권장 준비량 < 보장인원" 알림은 정의서대로 권장량 기준이다.

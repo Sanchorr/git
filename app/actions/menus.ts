@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { assertAdmin } from "@/lib/auth";
+import { assertStaff } from "@/lib/auth";
 import { monthBounds } from "@/lib/dates";
 import { saveMenusInput, type SaveMenusInput } from "@/lib/menus/schema";
 import { recomputePredictions } from "@/lib/recompute";
@@ -13,7 +13,7 @@ export type SaveMenusResult = { ok: true; saved: number; predicted: number } | {
 export async function saveMenus(raw: SaveMenusInput): Promise<SaveMenusResult> {
   let profile;
   try {
-    profile = await assertAdmin();
+    profile = await assertStaff();
   } catch (e) {
     return { ok: false, message: (e as Error).message };
   }
@@ -51,7 +51,7 @@ export async function saveMenus(raw: SaveMenusInput): Promise<SaveMenusResult> {
 
 /** 확인 표에서 '기존 값 → 새 값'을 보여 주기 위한 기존 메뉴 */
 export async function getExistingMenus(month: string) {
-  await assertAdmin();
+  await assertStaff();
   const { from, to } = monthBounds(month);
   const supabase = await createClient();
   const { data } = await supabase
@@ -64,7 +64,7 @@ export async function getExistingMenus(month: string) {
 
 /** 그 달과 다음 달의 패턴 일정 */
 export async function getPatternDays(month: string) {
-  await assertAdmin();
+  await assertStaff();
   const { from } = monthBounds(month);
   const [y, m] = month.split("-").map(Number);
   const next = new Date(Date.UTC(y, m + 1, 0)).toISOString().slice(0, 10);

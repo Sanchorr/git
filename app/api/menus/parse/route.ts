@@ -61,7 +61,7 @@ async function parseOne(client: Anthropic, model: string, system: string, path: 
 
 export async function POST(req: NextRequest) {
   const profile = await getProfile();
-  if (!profile || profile.role !== "admin") return NextResponse.json({ error: "관리자만 할 수 있어요" }, { status: 403 });
+  if (!profile) return NextResponse.json({ error: "로그인이 필요해요" }, { status: 403 });
 
   const input = parseRequest.safeParse(await req.json().catch(() => null));
   if (!input.success) return NextResponse.json({ error: "입력이 올바르지 않아요" }, { status: 400 });
