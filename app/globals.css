@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --surface-2: #eef2f8;
+  --ink: #0f1e33;
+  --muted: #5b6b82;
+  --line: #dfe5ee;
+  --navy: #1d4e89;
+  --flame: #2f7cf6;
+  --flame-soft: #e3edff;
+  --rain: #178f8a;
+  --rain-soft: #dff3f1;
+  --warn: #c7700a;
+  --warn-soft: #fdf0dc;
+  --bad: #c0362c;
+  --good: #1f8a4c;
+  --dial-bg: #0f2a4d;
+  --dial-ink: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1320;
+    --surface: #121d2e;
+    --surface-2: #192840;
+    --ink: #e6edf7;
+    --muted: #93a3ba;
+    --line: #26364f;
+    --navy: #7fb0ec;
+    --flame: #5b9bff;
+    --flame-soft: #17305a;
+    --rain: #3cc2bb;
+    --rain-soft: #0f3533;
+    --warn: #f0a23b;
+    --warn-soft: #3a2a12;
+    --bad: #f07167;
+    --good: #4cc38a;
+    --dial-bg: #08182e;
+    --dial-ink: #e6edf7;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-navy: var(--navy);
+  --color-flame: var(--flame);
+  --color-flame-soft: var(--flame-soft);
+  --color-rain: var(--rain);
+  --color-rain-soft: var(--rain-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-good: var(--good);
+  --color-dial: var(--dial-bg);
+  --color-dial-ink: var(--dial-ink);
+  --font-sans: "IBM Plex Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 계량기 숫자판 */
+.dial-digit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.72em;
+  padding: 0.08em 0.06em;
+  margin: 0 0.04em;
+  border-radius: 0.12em;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.18) 50%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  font-variant-numeric: tabular-nums;
+}

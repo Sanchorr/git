@@ -1,0 +1,13 @@
+{
+  "regions": ["icn1"],
+  "crons": [
+    { "path": "/api/cron/weather-short", "schedule": "20 20 * * *" },
+    { "path": "/api/cron/weather-short", "schedule": "20 8 * * *" },
+    { "path": "/api/cron/weather-mid", "schedule": "20 21 * * *" },
+    { "path": "/api/cron/weather-mid", "schedule": "20 9 * * *" },
+    { "path": "/api/cron/weather-observed", "schedule": "0 2 * * *" },
+    { "path": "/api/cron/calendar", "schedule": "0 18 * * *" },
+    { "path": "/api/cron/predict", "schedule": "40 21 * * *" },
+    { "path": "/api/cron/predict", "schedule": "40 9 * * *" }
+  ]
+}
